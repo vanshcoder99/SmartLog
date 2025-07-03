@@ -91,7 +91,7 @@ export default function HomePage() {
             </span>
             <span className="relative inline-block">
               <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Tracker
+                Log
               </span>
               <div className="absolute -bottom-3 left-0 right-0 h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full transform origin-left animate-[expandWidth_2s_ease-out_1s_forwards] scale-x-0"></div>
             </span>
