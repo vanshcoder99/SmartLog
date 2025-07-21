@@ -87,14 +87,14 @@ export default function AddTransactionModal({ showModal = true, setShowModal = (
 
   return (
     <div 
-      className={`absolute top-0 left-0 w-full bg-black transition-opacity duration-300 z-50 ${
+      className={`fixed inset-0 w-full h-screen bg-black transition-opacity duration-300 z-50 overflow-y-auto ${
         isVisible ? 'bg-opacity-50' : 'bg-opacity-0'
       }`}
       onClick={handleClose}
     >
-      <div className="flex items-center justify-center min-h-screen p-4">
+      <div className="flex items-center justify-center min-h-full p-4 py-8">
         <div
-          className={`bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all duration-300 ${
+          className={`bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all duration-300 my-auto ${
             isVisible ? 'scale-100 opacity-100 translate-y-0' : 'scale-95 opacity-0 translate-y-4'
           }`}
           onClick={(e) => e.stopPropagation()}
@@ -147,7 +147,7 @@ export default function AddTransactionModal({ showModal = true, setShowModal = (
                 }`}
                 placeholder="e.g., Food, Transport, Entertainment"
               />
-              {errors.category && <p className="text-red-500 text-sm animate-pulse">{errors.category}</p>}
+              {errors.category && <p className="text-category text-sm animate-pulse">{errors.category}</p>}
             </div>
 
     
