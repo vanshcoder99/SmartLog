@@ -20,3 +20,8 @@ If applicable, add screenshots or logs to help explain your problem.
 
 ## 📝 Additional Context
 Add any other context about the problem here.
+
+## 🙋 Your Details
+
+- **Name**:
+- **Email ID**:
