@@ -87,7 +87,7 @@ export default function AddTransactionModal({ showModal = true, setShowModal = (
 
   return (
     <div 
-      className={`fixed inset-0 bg-black transition-opacity duration-300 z-50 ${
+      className={`absolute top-0 left-0 w-full bg-black transition-opacity duration-300 z-50 ${
         isVisible ? 'bg-opacity-50' : 'bg-opacity-0'
       }`}
       onClick={handleClose}
