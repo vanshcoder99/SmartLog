@@ -15,3 +15,8 @@ Explain why this feature would be useful or improve the project.
 
 ## 🧩 Additional Context
 Add any other context, mockups, or screenshots related to the feature request.
+
+## 🙋 Your Details
+
+- **Name**:
+- **Email ID**:
