@@ -18,6 +18,7 @@ import {
 import { useTransactions } from "./TransactionContext";
 import { useState, useEffect } from 'react';
 import AddTransactionModal from './AddTransactionModal';
+import ConfirmationModal from './ConfirmationModal';
 import { Plus, TrendingUp, TrendingDown, Wallet, IndianRupee, Calendar, Tag, Filter, Search, Eye, EyeOff, Trash2 } from 'lucide-react';
 import { useTransactions } from './TransactionContext';
 import Footer from './Footer';
@@ -49,9 +50,20 @@ export default function Dashboard() {
   ];
   const categories = ["All", ...new Set(transactions.map((t) => t.category))];
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [transactionToDelete, setTransactionToDelete] = useState(null)
+
   const handleDelete = (id) => {
-    setTransactions((prev) => prev.filter((t) => t.id !== id));
+    setTransactionToDelete(id)
+    setShowDeleteModal(true)
   };
+
+  const handleConfirmDelete = () => {
+    setTransactions(prev => prev.filter(t => t.id !== transactionToDelete));
+    setShowDeleteModal(false)
+    setTransactionToDelete(null)
+  }
+
 
   useEffect(() => {
     setIsVisible(true);
@@ -385,11 +397,10 @@ export default function Dashboard() {
             </div>
           )}
         </div>
+        
+        <AddTransactionModal showModal={showModal} setShowModal={setShowModal} />
+        <ConfirmationModal show={showDeleteModal} onClose={() => setShowDeleteModal(false)} onConfirm={handleConfirmDelete} title={"Confirm Deletion"} message={'Are you sure you want to delete this transaction? This action cannot be undone.'} />
 
-        <AddTransactionModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-        />
       </div>
 
       <style jsx>{`
