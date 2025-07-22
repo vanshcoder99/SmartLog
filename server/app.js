@@ -13,4 +13,8 @@ app.get("/is-up", (req, res) => {
   res.send("Hello World!");
 });
 
+// All the routes here
+import userRoutes from "./routers/user.routers.js";
+app.use("/api/v1/users", userRoutes);
+
 export default app;
