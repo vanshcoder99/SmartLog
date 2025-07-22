@@ -13,7 +13,7 @@ import {
   Eye,
   EyeOff,
   ChevronDown,
-  Trash2
+  Trash2,
 } from "lucide-react";
 import { useTransactions } from "./TransactionContext";
 
@@ -42,10 +42,7 @@ export default function Dashboard() {
     "Health",
     "Education",
   ];
-  const categories = [
-    "All",
-    ...new Set([...defaultCategories, ...transactions.map((t) => t.category)]),
-  ];
+  const categories = ["All", ...new Set(transactions.map((t) => t.category))];
 
   const handleDelete = (id) => {
     setTransactions((prev) => prev.filter((t) => t.id !== id));
