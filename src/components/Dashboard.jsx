@@ -4,6 +4,8 @@ import {
   TrendingDown,
   Wallet,
   IndianRupee,
+  ChevronLeft,
+  ChevronRight,
   Calendar,
   Tag,
   Filter,
@@ -17,8 +19,6 @@ import { useTransactions } from "./TransactionContext";
 import { useState, useEffect } from 'react';
 import AddTransactionModal from './AddTransactionModal';
 
-import { Plus, TrendingUp, TrendingDown, Wallet, IndianRupee, ChevronLeft, ChevronRight,Calendar, Tag, Filter, Search, Eye, EyeOff, Trash2 } from 'lucide-react';
-import { useTransactions } from './TransactionContext';
 import { useCurrency } from "./CurrencyContext";
 
 import ConfirmationModal from './ConfirmationModal';
@@ -63,14 +63,6 @@ export default function Dashboard() {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).replace(/\d/g, "").trim();
-
-
-  const [animatedValues, setAnimatedValues] = useState({
-    income: 0,
-    expense: 0,
-    balance: 0,
-  });
-
 
   const balance = income - expense;
   const defaultCategories = [
@@ -330,7 +322,6 @@ export default function Dashboard() {
               {/* Add custom dropdown arrow */}
               <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none z-10" />
             </div>
-          </div>
             <div className="flex items-center gap-3 bg-white/70 backdrop-blur-md px-4 py-2 rounded-xl border border-gray-200">
             <button
               onClick={() => handleChange("prev")}
@@ -350,8 +341,7 @@ export default function Dashboard() {
               <ChevronRight size={20} className="text-gray-400" />
             </button>
           </div>
-        </div>
-
+          </div>
 
           <div
             className={`transition-all duration-1000 ${
