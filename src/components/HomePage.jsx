@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { IndianRupee, TrendingUp, PieChart, BarChart3, Sparkles, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import Footer from './Footer';
 
 
 export default function HomePage() {
@@ -193,18 +194,7 @@ export default function HomePage() {
           100% { transform: translateY(0); opacity: 1; }
         }
       `}</style>
-      <footer className="w-full text-center py-6 text-gray-400 text-sm">
-        Made with <span className="text-red-500">♥</span> by{' '}
-        <a
-          href="https://www.linkedin.com/in/tanmay-kalra-09oct/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-400 hover:underline"
-          style={{ zIndex: 50, position: 'relative', pointerEvents: 'auto' }}
-        >
-          Tanmay Kalra
-        </a>
-      </footer>
+      <Footer />
     </div>
   
   );
