@@ -12,6 +12,8 @@ import {
   EyeOff,
   ChevronDown,
   Trash2,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { useTransactions } from "./TransactionContext";
 import { useState, useEffect } from 'react';
@@ -32,6 +34,21 @@ export default function Dashboard() {
     expense: 0,
     balance: 0,
   });
+  const [darkMode, setDarkMode] = useState(false);
+
+  // Toggle dark mode
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  // Apply dark mode class to body
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
 
   const balance = income - expense;
   const defaultCategories = [
@@ -59,7 +76,6 @@ export default function Dashboard() {
     setShowDeleteModal(false)
     setTransactionToDelete(null)
   }
-
 
   useEffect(() => {
     setIsVisible(true);
@@ -120,23 +136,43 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 flex flex-col">
+    <div className={`min-h-screen flex flex-col transition-colors duration-300 ${
+      darkMode 
+        ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100" 
+        : "bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 text-gray-900"
+    }`}>
       <main className="flex-1 w-full p-6 mb-40">
         <div className="max-w-6xl mx-auto">
-          <div
-            className={`transition-all duration-1000 ${
+          <div className="flex justify-between items-start mb-2">
+            <div className={`transition-all duration-1000 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-            }`}
-          >
-            <h2 className="text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
-              Dashboard
-            </h2>
-            <p className="text-gray-600 mb-8">
-              Track your financial journey with smart insights
-            </p>
+            }`}>
+              <h2 className="text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+                Dashboard
+              </h2>
+              <p className={`transition-colors duration-300 ${
+                darkMode ? "text-gray-400" : "text-gray-600"
+              } mb-8`}>
+                Track your financial journey with smart insights
+              </p>
+            </div>
+            
+            {/* Dark Mode Toggle Button */}
+            <button
+              onClick={toggleDarkMode}
+              className={`p-2 rounded-full transition-all duration-300 ${
+                darkMode 
+                  ? "bg-gray-700 text-yellow-300 hover:bg-gray-600" 
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              }`}
+              aria-label="Toggle dark mode"
+            >
+              {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {/* Income Card */}
             <div
               className={`relative p-6 rounded-2xl transition-all duration-500 cursor-pointer transform hover:scale-105 hover:-translate-y-2 ${
                 hoveredCard === "income"
@@ -169,6 +205,7 @@ export default function Dashboard() {
               </div>
             </div>
 
+            {/* Expense Card */}
             <div
               className={`relative p-6 rounded-2xl transition-all duration-500 cursor-pointer transform hover:scale-105 hover:-translate-y-2 ${
                 hoveredCard === "expense"
@@ -201,6 +238,7 @@ export default function Dashboard() {
               </div>
             </div>
 
+            {/* Balance Card */}
             <div
               className={`relative p-6 rounded-2xl transition-all duration-500 cursor-pointer transform hover:scale-105 hover:-translate-y-2 ${
                 hoveredCard === "balance"
@@ -269,7 +307,11 @@ export default function Dashboard() {
                 placeholder="Search transactions..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                className={`w-full pl-12 pr-4 py-4 rounded-2xl border focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 backdrop-blur-sm ${
+                  darkMode 
+                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-blue-900" 
+                    : "bg-white/80 border-gray-200 text-gray-900 placeholder-gray-500"
+                }`}
               />
             </div>
 
@@ -278,16 +320,18 @@ export default function Dashboard() {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full pl-12 pr-8 py-4 rounded-2xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 bg-white/80 backdrop-blur-sm appearance-none cursor-pointer relative z-0"
+                className={`w-full pl-12 pr-8 py-4 rounded-2xl border focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 backdrop-blur-sm appearance-none cursor-pointer relative z-0 ${
+                  darkMode 
+                    ? "bg-gray-800 border-gray-700 text-white focus:ring-blue-900" 
+                    : "bg-white/80 border-gray-200 text-gray-900"
+                }`}
               >
                 {categories.map((category) => (
                   <option key={category} value={category}>
-                    {/* Prepend the icon to the category name */}
                     {getTransactionIcon(category)} {category}
                   </option>
                 ))}
               </select>
-              {/* Add custom dropdown arrow */}
               <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none z-10" />
             </div>
           </div>
@@ -298,10 +342,14 @@ export default function Dashboard() {
             }`}
             style={{ animationDelay: "1s" }}
           >
-            <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+            <h3 className={`text-2xl font-bold mb-6 flex items-center gap-3 ${
+              darkMode ? "text-gray-100" : "text-gray-800"
+            }`}>
               <div className="w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
               Recent Transactions
-              <span className="text-sm font-normal text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+              <span className={`text-sm font-normal px-3 py-1 rounded-full ${
+                darkMode ? "text-gray-300 bg-gray-700" : "text-gray-500 bg-gray-100"
+              }`}>
                 {filteredTransactions.length}
               </span>
             </h3>
@@ -310,7 +358,11 @@ export default function Dashboard() {
               {filteredTransactions.map((transaction, index) => (
                 <div
                   key={transaction.id}
-                  className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 border border-gray-100 hover:border-gray-200"
+                  className={`group p-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 border ${
+                    darkMode 
+                      ? "bg-gray-800 border-gray-700 hover:border-gray-600" 
+                      : "bg-white/80 border-gray-100 hover:border-gray-200"
+                  }`}
                   style={{ animationDelay: `${1.2 + index * 0.1}s` }}
                 >
                   <div className="flex items-center justify-between">
@@ -318,17 +370,27 @@ export default function Dashboard() {
                       <div
                         className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl ${
                           transaction.type === "Income"
-                            ? "bg-green-100 text-green-600"
-                            : "bg-red-100 text-red-600"
-                        } group-hover:scale-110 transition-transform duration-300`}
+                            ? "bg-green-100 text-green-600 group-hover:bg-green-200"
+                            : "bg-red-100 text-red-600 group-hover:bg-red-200"
+                        } group-hover:scale-110 transition-all duration-300 ${
+                          darkMode 
+                            ? transaction.type === "Income"
+                              ? "dark:bg-green-900/30 dark:text-green-400 group-hover:dark:bg-green-900/50"
+                              : "dark:bg-red-900/30 dark:text-red-400 group-hover:dark:bg-red-900/50"
+                            : ""
+                        }`}
                       >
                         {getTransactionIcon(transaction.category)}
                       </div>
                       <div>
-                        <div className="font-bold text-gray-800 group-hover:text-blue-600 transition-colors duration-300">
+                        <div className={`font-bold group-hover:text-blue-600 transition-colors duration-300 ${
+                          darkMode ? "text-gray-100" : "text-gray-800"
+                        }`}>
                           {transaction.note}
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                        <div className={`flex items-center gap-2 text-sm ${
+                          darkMode ? "text-gray-400" : "text-gray-500"
+                        }`}>
                           <Tag className="w-4 h-4" />
                           {transaction.category}
                           <Calendar className="w-4 h-4 ml-2" />
@@ -341,18 +403,20 @@ export default function Dashboard() {
                     </div>
                     <div className="text-right flex items-center justify-end">
                       <div
-                        className={`text-2xl font-black ${
+                        className={`text-2xl font-black group-hover:scale-110 transition-transform duration-300 ${
                           transaction.type === "Expense"
-                            ? "text-red-600"
-                            : "text-green-600"
-                        } group-hover:scale-110 transition-transform duration-300`}
+                            ? "text-red-600 dark:text-red-400"
+                            : "text-green-600 dark:text-green-400"
+                        }`}
                       >
                         {transaction.type === "Expense" ? "-" : "+"}
                         {formatCurrency(transaction.amount)}
                       </div>
                       <button
                         onClick={() => handleDelete(transaction.id)}
-                        className="ml-2 text-gray-400 hover:text-red-600 transition-colors"
+                        className={`ml-2 transition-colors ${
+                          darkMode ? "text-gray-500 hover:text-red-500" : "text-gray-400 hover:text-red-600"
+                        }`}
                         title="Delete"
                       >
                         <Trash2 className="w-5 h-5" />
@@ -360,12 +424,14 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="mt-4 h-1 bg-gray-100 rounded-full overflow-hidden">
+                  <div className={`mt-4 h-1 rounded-full overflow-hidden ${
+                    darkMode ? "bg-gray-700" : "bg-gray-100"
+                  }`}>
                     <div
                       className={`h-full rounded-full transition-all duration-1000 ${
                         transaction.type === "Income"
-                          ? "bg-green-400"
-                          : "bg-red-400"
+                          ? "bg-green-400 dark:bg-green-500"
+                          : "bg-red-400 dark:bg-red-500"
                       }`}
                       style={{
                         width: `${Math.min(
@@ -384,24 +450,37 @@ export default function Dashboard() {
 
             {filteredTransactions.length === 0 && (
               <div className="text-center py-12">
-                <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Search className="w-8 h-8 text-gray-400" />
+                <div className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 ${
+                  darkMode ? "bg-gray-800" : "bg-gray-100"
+                }`}>
+                  <Search className={`w-8 h-8 ${
+                    darkMode ? "text-gray-500" : "text-gray-400"
+                  }`} />
                 </div>
-                <p className="text-gray-500 text-lg">No transactions found</p>
-                <p className="text-gray-400">
+                <p className={`text-lg ${
+                  darkMode ? "text-gray-400" : "text-gray-500"
+                }`}>
+                  No transactions found
+                </p>
+                <p className={darkMode ? "text-gray-500" : "text-gray-400"}>
                   Try adjusting your search or filters
                 </p>
               </div>
             )}
           </div>
-          
-
         </div>
       </main>
       <Footer />
 
-      <AddTransactionModal showModal={showModal} setShowModal={setShowModal} />
-      <ConfirmationModal show={showDeleteModal} onClose={() => setShowDeleteModal(false)} onConfirm={handleConfirmDelete} title={"Confirm Deletion"} message={'Are you sure you want to delete this transaction? This action cannot be undone.'} />
+      <AddTransactionModal showModal={showModal} setShowModal={setShowModal} darkMode={darkMode} />
+      <ConfirmationModal 
+        show={showDeleteModal} 
+        onClose={() => setShowDeleteModal(false)} 
+        onConfirm={handleConfirmDelete} 
+        title={"Confirm Deletion"} 
+        message={'Are you sure you want to delete this transaction? This action cannot be undone.'}
+        darkMode={darkMode}
+      />
 
       <style jsx>{`
         @keyframes expandWidth {
@@ -431,7 +510,6 @@ export default function Dashboard() {
           }
         }
       `}</style>
-      
     </div>
   );
 }
