@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import AddTransactionModal from './AddTransactionModal';
 import { Plus, TrendingUp, TrendingDown, Wallet, IndianRupee, Calendar, Tag, Filter, Search, Eye, EyeOff, Trash2 } from 'lucide-react';
 import { useTransactions } from './TransactionContext';
+import Footer from './Footer';
 
 export default function Dashboard() {
   const { transactions, income, expense, setTransactions } = useTransactions();
@@ -312,6 +313,7 @@ export default function Dashboard() {
           to { transform: translateY(0); opacity: 1; }
         }
       `}</style>
+      <Footer />
     </div>
   );
 }
