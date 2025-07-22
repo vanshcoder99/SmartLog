@@ -12,6 +12,7 @@ import {
   EyeOff,
   ChevronDown,
   Trash2,
+  ChevronUp,
 } from "lucide-react";
 import { useTransactions } from "./TransactionContext";
 import { useState, useEffect } from 'react';
@@ -27,6 +28,7 @@ export default function Dashboard() {
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredCard, setHoveredCard] = useState(null);
   const [showBalance, setShowBalance] = useState(true);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
   const [animatedValues, setAnimatedValues] = useState({
     income: 0,
     expense: 0,
@@ -60,6 +62,22 @@ export default function Dashboard() {
     setTransactionToDelete(null)
   }
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      setShowScrollToTop(scrollTop > 300); // Show button after scrolling 300px
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     setIsVisible(true);
@@ -394,10 +412,23 @@ export default function Dashboard() {
               </div>
             )}
           </div>
-          
-
         </div>
       </main>
+
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-24 right-6 z-50 w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transform transition-all duration-300 flex items-center justify-center group ${
+          showScrollToTop 
+            ? 'opacity-100 translate-y-0 scale-100' 
+            : 'opacity-0 translate-y-4 scale-75 pointer-events-none'
+        }`}
+        title="Scroll to top"
+        aria-label="Scroll to top"
+      >
+        <ChevronUp className="w-6 h-6 transition-transform group-hover:-translate-y-1" />
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+      </button>
+
       <Footer />
 
       <AddTransactionModal showModal={showModal} setShowModal={setShowModal} />
@@ -431,7 +462,6 @@ export default function Dashboard() {
           }
         }
       `}</style>
-      
     </div>
   );
 }
