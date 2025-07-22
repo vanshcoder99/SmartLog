@@ -1,9 +1,21 @@
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
-import asycnHandler from "../utils/asyncHandler.js";
+import asyncHandler from "../utils/asyncHandler.js";
 import { User } from "../models/user.models.js";
 
-const registerUser = asycnHandler(async (req, res) => {
+const generateAccessAndRefreshToken = async (user) => {
+  const accessToken = await user.generateAccessToken();
+  const refreshToken = await user.generateRefreshToken();
+  user.refreshToken = refreshToken;
+  // Skip validation since only partial fields are updated (other required fields may be missing)
+  await user.save({
+    validateBeforeSave: false,
+  });
+
+  return { accessToken: accessToken, refreshToken: refreshToken };
+};
+
+const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password, fullName } = req.body;
 
   // Checking if the each and every field that it's not empty
@@ -33,7 +45,8 @@ const registerUser = asycnHandler(async (req, res) => {
 
     let conflictField = [];
 
-    if (isUserExists.username === username.toLowerCase()) conflictField.push("username");
+    if (isUserExists.username === username.toLowerCase())
+      conflictField.push("username");
     if (isUserExists.email === email) conflictField.push("email");
 
     const message = `User with this ${conflictField.join(
@@ -73,4 +86,62 @@ const registerUser = asycnHandler(async (req, res) => {
     .json(new ApiResponse(200, createdUser, "User registered successfully"));
 });
 
-export { registerUser };
+const loginUser = asyncHandler(async (req, res) => {
+  const { username, email, password } = req.body;
+  //Any one field is required
+  if (!username && !email) {
+    throw new ApiError(400, "Username or email is required");
+  }
+  const user = await User.findOne({
+    $or: [{ email }, { username }],
+  });
+
+  if (!user) {
+    throw new ApiError(404, "No user with the current username or email");
+  }
+
+  const isPasswordCorrect = await user.isPasswordCorrect(password);
+
+  if (!isPasswordCorrect) {
+    throw new ApiError(401, "Invalid password");
+  }
+  //Generating user access and refresh tokens
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
+    user
+  );
+
+  const loggedInUser = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(new ApiResponse(200, loggedInUser, "User logged in successfully"));
+});
+
+const logoutUser = asyncHandler(async (req, res) => {
+  await User.findByIdAndUpdate(
+    req.user._id,
+    { $set: { refreshToken: undefined } }
+
+    // Returns the updated document
+    // { new: true }
+  );
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, {}, "User logged out"));
+});
+
+export { registerUser, loginUser, logoutUser };
