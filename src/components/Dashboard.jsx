@@ -368,7 +368,9 @@ export default function Dashboard() {
               </select>
               <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none z-10" />
             </div>
-            <div className="flex items-center gap-3 bg-white/70 backdrop-blur-md px-4 py-2 rounded-xl border border-gray-200">
+            <div className={`${
+                darkMode ? "flex items-center gap-3 bg-gray-800 backdrop-blur-md px-4 py-2 rounded-xl border border-gray-700" : "flex items-center gap-3 bg-white/70 backdrop-blur-md px-4 py-2 rounded-xl border border-gray-200"
+              }`}>
             <button
               onClick={() => handleChange("prev")}
               className="p-1 rounded hover:bg-gray-200 active:bg-gray-300 transition"
@@ -376,7 +378,7 @@ export default function Dashboard() {
             >
               <ChevronLeft size={20} className="text-gray-400" />
             </button>
-            <span className="text-xl text-gray-600 text-center select-none">
+            <span className="text-xl text-green-600 text-center select-none">
               {symbol}
             </span>
             <button
