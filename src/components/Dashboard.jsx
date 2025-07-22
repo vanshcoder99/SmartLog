@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import AddTransactionModal from "./AddTransactionModal";
 import {
   Plus,
   TrendingUp,
