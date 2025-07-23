@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { IndianRupee, TrendingUp, PieChart, BarChart3, Sparkles, ArrowRight } from 'lucide-react';
+import { IndianRupee, TrendingUp, PieChart, BarChart3, Sparkles, ArrowRight,CalendarCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 import {Link} from 'react-router-dom';
@@ -43,8 +43,8 @@ export default function HomePage() {
       link: '/dashboard'
     },
     { 
-      icon: TrendingUp, 
-      title: 'Smart Analytics', 
+      icon: CalendarCheck, 
+      title: 'Habit Tracker', 
       desc: 'Insights that matter', 
       color: 'from-blue-400 to-purple-500',
       link: '/habit-tracker'
