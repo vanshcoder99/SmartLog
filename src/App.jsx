@@ -3,16 +3,20 @@ import HomePage from './components/HomePage';
 import Dashboard from './components/Dashboard';
 import { TransactionProvider } from './components/TransactionContext';
 import { Toaster } from 'react-hot-toast';
+import { CurrencyProvider } from "./components/CurrencyContext";
+
 export default function App() {
   return (
     <TransactionProvider>
-      <Router>
-        <Toaster />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Routes>
-      </Router>
+      <CurrencyProvider>
+        <Router>
+          <Toaster />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Routes>
+        </Router>
+      </CurrencyProvider>
     </TransactionProvider>
   );
 }
