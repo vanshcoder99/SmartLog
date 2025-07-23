@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard';
 import { TransactionProvider } from './components/TransactionContext';
 import { CurrencyProvider } from "./components/CurrencyContext";
 import AboutPage from './components/AboutPage';
+import ContactPage from './components/ContactPage';
 
 export default function App() {
 
@@ -15,6 +16,7 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/dashboard" element={<Dashboard/>} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
           </Routes>
         </Router>
       </CurrencyProvider>
