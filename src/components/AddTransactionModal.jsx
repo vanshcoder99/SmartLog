@@ -9,6 +9,7 @@ const formatDate = date => {
 import { useState, useEffect } from 'react';
 import { useCurrency } from "./CurrencyContext";
 import { useTransactions } from './TransactionContext';
+import toast from 'react-hot-toast';
 
 export default function AddTransactionModal({ showModal = true, setShowModal = () => {}, darkMode = false }) {
   const { addTransaction } = useTransactions();
@@ -63,7 +64,7 @@ export default function AddTransactionModal({ showModal = true, setShowModal = (
       id: Date.now(),
       amount: parseFloat(form.amount),
     });
-
+toast.success('Transaction Added Successfully!');
     setForm({
       amount: "",
       category: "",
