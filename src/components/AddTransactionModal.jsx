@@ -40,33 +40,45 @@ export default function AddTransactionModal({ showModal = true, setShowModal = (
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-    
+
     setIsSubmitting(true);
     
+    await new Promise(resolve => setTimeout(resolve, 800)); 
 
-    await new Promise(resolve => setTimeout(resolve, 800));
-    
-    addTransaction({
-      ...form,
-      id: Date.now(),
-      amount: parseFloat(form.amount)
-    });
-    
-    setForm({
-      amount: '',
-      category: '',
-      type: 'Expense',
-      date: formatDate(new Date()),
-      note: ''
-    });
-    setErrors({});
-    setIsSubmitting(false);
-    handleClose();
+    try {
+      
+      addTransaction({
+        ...form,
+        id: Date.now(),
+        amount: parseFloat(form.amount)
+      });
+
+      
+      toast.success('Transaction Added Successfully!');
+
+      
+      setForm({
+        amount: '',
+        category: '',
+        type: 'Expense',
+        date: formatDate(new Date()),
+        note: ''
+      });
+      handleClose(); 
+
+    } catch (error) {
+      
+      console.error("Failed to add transaction:", error);
+      toast.error('Could not add transaction. Please try again.');
+    } finally {
+      
+      setIsSubmitting(false);
+      setErrors({});
+    }
   };
-
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(() => setShowModal(false), 300);
