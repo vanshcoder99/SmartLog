@@ -11,7 +11,7 @@ import TransactionPDF from "./TransactionPDF";
 import { Link } from "react-router-dom";
 
 export default function Dashboard() {
-  const { transactions, income, expense, setTransactions } = useTransactions();
+  const { transactions, income, expense, setTransactions, deleteTransaction } = useTransactions();
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -79,7 +79,7 @@ export default function Dashboard() {
   };
 
   const handleConfirmDelete = () => {
-    setTransactions(prev => prev.filter(t => t.id !== transactionToDelete));
+    deleteTransaction(transactionToDelete);
 
     setShowDeleteModal(false)
     setTransactionToDelete(null)
@@ -135,6 +135,7 @@ export default function Dashboard() {
       Shopping: "🛍️",
       Health: "🏥",
       Education: "📚",
+      Savings: "🏦",
     };
 
     return icons[category] || "📝";
@@ -152,6 +153,8 @@ export default function Dashboard() {
     };
   }, [showModal]);
 
+
+  const maxAmount = Math.max(1, ...transactions.map(t => t.amount));
   return (
     <div className={`min-h-screen flex flex-col transition-colors duration-300 ${darkMode
         ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100"
@@ -423,7 +426,7 @@ export default function Dashboard() {
                           : "bg-red-400 dark:bg-red-500"
                         }`}
                       style={{
-                        width: `${Math.min((transaction.amount / Math.max(...transactions.map(t => t.amount))) * 100, 100)}%`,
+                        width: `${Math.min((transaction.amount / maxAmount) * 100, 100)}%`,
                         animationDelay: `${1.5 + index * 0.1}s`,
                       }}></div>
                   </div>

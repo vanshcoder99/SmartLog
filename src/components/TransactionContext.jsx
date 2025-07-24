@@ -39,6 +39,31 @@ export const TransactionProvider = ({ children }) => {
     setGoals([goal, ...goals]);
   }
 
+  const deleteTransaction = (transactionId) => {
+    // 1. Find the transaction to be deleted
+    const transactionToDelete = transactions.find(t => t.id === transactionId);
+
+    if (!transactionToDelete) return; // Exit if transaction not found
+
+    // 2. Check if it was a contribution to a goal
+    if (transactionToDelete.goalId) {
+      // 3. If yes, "refund" the amount from the goal
+      const updatedGoals = goals.map(goal => {
+        if (goal.id === transactionToDelete.goalId) {
+          return {
+            ...goal,
+            currentAmount: goal.currentAmount - transactionToDelete.amount
+          };
+        }
+        return goal;
+      });
+      setGoals(updatedGoals);
+    }
+
+    // 4. Finally, delete the transaction itself
+    setTransactions(prev => prev.filter(t => t.id !== transactionId));
+  };
+
   const income = transactions
     .filter(t => t.type === 'Income')
     .reduce((sum, t) => sum + Number(t.amount), 0);
@@ -66,13 +91,14 @@ export const TransactionProvider = ({ children }) => {
         type: 'Expense',
         category: 'Savings',
         date: getTodaysDate(),
+        goalId: goalId
       };
       addTransaction(contributionTransaction);
     };
 
   return (
     <TransactionContext.Provider
-      value={{ transactions, setTransactions, addTransaction, income, expense, goals, setGoals, addGoal, contributeToGoal }}
+      value={{ transactions, setTransactions, addTransaction, income, expense, deleteTransaction, goals, setGoals, addGoal, contributeToGoal }}
     >
       {children}
     </TransactionContext.Provider>
