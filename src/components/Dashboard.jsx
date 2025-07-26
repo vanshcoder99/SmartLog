@@ -22,74 +22,15 @@ export default function Dashboard() {
 
   const [animatedValues, setAnimatedValues] = useState({ income: 0, expense: 0, balance: 0 });
   const { currency, locale, setCurrency, setLocale } = useCurrency();
-  const [showCurrencySearch, setShowCurrencySearch] = useState(false);
-  const [currencySearchTerm, setCurrencySearchTerm] = useState("");
-  
   const currencies = [
-    { code: "INR", locale: "en-IN", name: "Indian Rupee" },
-    { code: "USD", locale: "en-US", name: "US Dollar" },
-    { code: "EUR", locale: "de-DE", name: "Euro" },
-    { code: "BRL", locale: "pt-BR", name: "Brazilian Real" },
-    { code: "JPY", locale: "ja-JP", name: "Japanese Yen" },
-    { code: "GBP", locale: "en-GB", name: "British Pound" },
-    { code: "CAD", locale: "en-CA", name: "Canadian Dollar" },
-    { code: "AUD", locale: "en-AU", name: "Australian Dollar" },
-    { code: "CHF", locale: "de-CH", name: "Swiss Franc" },
-    { code: "CNY", locale: "zh-CN", name: "Chinese Yuan" },
-    { code: "KRW", locale: "ko-KR", name: "South Korean Won" },
-    { code: "SGD", locale: "en-SG", name: "Singapore Dollar" },
-    { code: "HKD", locale: "en-HK", name: "Hong Kong Dollar" },
-    { code: "SEK", locale: "sv-SE", name: "Swedish Krona" },
-    { code: "NOK", locale: "nb-NO", name: "Norwegian Krone" },
-    { code: "DKK", locale: "da-DK", name: "Danish Krone" },
-    { code: "PLN", locale: "pl-PL", name: "Polish Zloty" },
-    { code: "RUB", locale: "ru-RU", name: "Russian Ruble" },
-    { code: "TRY", locale: "tr-TR", name: "Turkish Lira" },
-    { code: "MXN", locale: "es-MX", name: "Mexican Peso" },
-    { code: "ZAR", locale: "en-ZA", name: "South African Rand" },
-    { code: "NZD", locale: "en-NZ", name: "New Zealand Dollar" },
-    { code: "THB", locale: "th-TH", name: "Thai Baht" },
-    { code: "MYR", locale: "ms-MY", name: "Malaysian Ringgit" },
-    { code: "AED", locale: "ar-AE", name: "UAE Dirham" },
-    { code: "SAR", locale: "ar-SA", name: "Saudi Riyal" },
-    { code: "ILS", locale: "he-IL", name: "Israeli Shekel" },
-    { code: "CZK", locale: "cs-CZ", name: "Czech Koruna" },
+    { code: "INR", locale: "en-IN" },
+    { code: "USD", locale: "en-US" },
+    { code: "EUR", locale: "de-DE" },
+    { code: "BRL", locale: "pt-BR" },
+    { code: "JPY", locale: "ja-JP" },
   ];
 
   const currentIndex = currencies.findIndex((c) => c.code === currency);
-
-  const filteredCurrencies = currencies.filter(curr => 
-    curr.name.toLowerCase().includes(currencySearchTerm.toLowerCase()) ||
-    curr.code.toLowerCase().includes(currencySearchTerm.toLowerCase())
-  );
-
-  const handleCurrencySelect = (selectedCurrency) => {
-    setCurrency(selectedCurrency.code);
-    setLocale(selectedCurrency.locale);
-    setShowCurrencySearch(false);
-    setCurrencySearchTerm("");
-  };
-
-  // Close currency search when clicking outside, but not when clicking inside dropdown
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      const container = document.querySelector('.currency-search-container');
-      const dropdown = document.querySelector('.currency-dropdown');
-      
-      // Don't close if clicking inside the container or dropdown
-      if (showCurrencySearch && 
-          !event.target.closest('.currency-search-container') && 
-          !event.target.closest('.currency-dropdown')) {
-        setShowCurrencySearch(false);
-        setCurrencySearchTerm("");
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [showCurrencySearch]);
 
   const handleChange = (direction) => {
     const newIndex =
@@ -399,161 +340,25 @@ export default function Dashboard() {
               </select>
               <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none z-10" />
             </div>
-            <div className={`relative isolate currency-search-container ${darkMode ? "flex items-center gap-3 bg-gray-800 backdrop-blur-md px-4 py-2 rounded-xl border border-gray-700" : "flex items-center gap-3 bg-white/70 backdrop-blur-md px-4 py-2 rounded-xl border border-gray-200"
+            <div className={`${darkMode ? "flex items-center gap-3 bg-gray-800 backdrop-blur-md px-4 py-2 rounded-xl border border-gray-700" : "flex items-center gap-3 bg-white/70 backdrop-blur-md px-4 py-2 rounded-xl border border-gray-200"
               }`}>
               <button
                 onClick={() => handleChange("prev")}
-                className={`p-2 rounded-lg transition-all duration-200 ${darkMode ? "hover:bg-gray-700 text-gray-400 hover:text-gray-300" : "hover:bg-gray-200 text-gray-400 hover:text-gray-600"}`}
+                className="p-1 rounded hover:bg-gray-200 active:bg-gray-300 transition"
                 aria-label="Previous currency"
-                type="button"
               >
-                <ChevronLeft size={18} />
+                <ChevronLeft size={20} className="text-gray-400" />
               </button>
-              
-              <button
-                onClick={() => setShowCurrencySearch(!showCurrencySearch)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 min-w-[80px] cursor-pointer ${
-                  showCurrencySearch 
-                    ? darkMode 
-                      ? "bg-blue-900/50 text-blue-400 border border-blue-700" 
-                      : "bg-blue-50 text-blue-600 border border-blue-200"
-                    : darkMode
-                      ? "hover:bg-gray-700 text-green-600 hover:text-green-500"
-                      : "hover:bg-gray-100 text-green-600 hover:text-green-700"
-                }`}
-                title="Click to Search Currencies"
-                type="button"
-              >
-                <span className="text-lg font-semibold">{symbol}</span>
-                <span className="text-xs font-medium">{currency}</span>
-                <ChevronDown size={14} className={`transition-transform duration-200 ${showCurrencySearch ? "rotate-180" : ""}`} />
-              </button>
-              
+              <span className="text-xl text-green-600 text-center select-none">
+                {symbol}
+              </span>
               <button
                 onClick={() => handleChange("next")}
-                className={`p-2 rounded-lg transition-all duration-200 ${darkMode ? "hover:bg-gray-700 text-gray-400 hover:text-gray-300" : "hover:bg-gray-200 text-gray-400 hover:text-gray-600"}`}
+                className="p-1 rounded hover:bg-gray-200 active:bg-gray-300 transition"
                 aria-label="Next currency"
-                type="button"
               >
-                <ChevronRight size={18} />
+                <ChevronRight size={20} className="text-gray-400" />
               </button>
-
-              {/* Currency Search Dropdown */}
-              {showCurrencySearch && (
-                <div 
-                  className={`currency-dropdown fixed inset-0 z-[9999] bg-black bg-opacity-20`}
-                  onClick={() => setShowCurrencySearch(false)}
-                >
-                  <div 
-                    className={`absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md ${darkMode ? "bg-gray-800 border border-gray-700" : "bg-white border border-gray-200"} rounded-xl shadow-2xl max-h-[90vh] overflow-hidden`}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <div className="p-4 flex justify-between items-center border-b mb-1">
-                      <h3 className={`text-lg font-bold ${darkMode ? "text-white" : "text-gray-800"}`}>Select Currency</h3>
-                      <button 
-                        onClick={() => setShowCurrencySearch(false)} 
-                        className={`p-1 rounded-full ${darkMode ? "hover:bg-gray-700 text-gray-400" : "hover:bg-gray-100 text-gray-500"}`}
-                        type="button"
-                      >
-                        ✕
-                      </button>
-                    </div>
-
-                    <div 
-                      className={`p-4 ${darkMode ? "border-gray-700" : "border-gray-200"}`}
-                    >
-                      <div className="relative">
-                        <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${darkMode ? "text-gray-400" : "text-gray-500"} pointer-events-none`} />
-                        <input
-                          type="text"
-                          placeholder="Search Currency"
-                          value={currencySearchTerm}
-                          onChange={(e) => setCurrencySearchTerm(e.target.value)}
-                          className={`w-full pl-10 pr-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-200 cursor-text ${
-                            darkMode 
-                              ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500" 
-                              : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-400 focus:bg-white"
-                          }`}
-                          autoFocus
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="overflow-y-auto max-h-[50vh]">
-                      {filteredCurrencies.length > 0 ? (
-                        <div className="grid grid-cols-1 gap-1 p-2">
-                          {filteredCurrencies.map((curr) => {
-                            const currSymbol = (0).toLocaleString(curr.locale, {
-                              style: "currency",
-                              currency: curr.code,
-                              minimumFractionDigits: 0,
-                              maximumFractionDigits: 0,
-                            }).replace(/\d/g, "").trim();
-                            
-                            const isSelected = currency === curr.code;
-                            
-                            return (
-                              <div
-                                key={curr.code}
-                                className={`px-4 py-3 cursor-pointer transition-all duration-200 rounded-lg ${
-                                  isSelected
-                                    ? darkMode
-                                      ? "bg-blue-900/30 text-blue-400 border-l-4 border-blue-500"
-                                      : "bg-blue-50 text-blue-600 border-l-4 border-blue-500"
-                                    : darkMode
-                                      ? "hover:bg-gray-700 text-gray-300"
-                                      : "hover:bg-gray-50 text-gray-700"
-                                }`}
-                                onClick={() => {
-                                  setCurrency(curr.code);
-                                  setLocale(curr.locale);
-                                  setShowCurrencySearch(false);
-                                  setCurrencySearchTerm("");
-                                }}
-                              >
-                                <div className="flex items-center justify-between">
-                                  <div className="flex items-center gap-3">
-                                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold ${
-                                      isSelected
-                                        ? "bg-green-600 text-white"
-                                        : darkMode
-                                          ? "bg-gray-700 text-green-400"
-                                          : "bg-green-100 text-green-600"
-                                    }`}>
-                                      {currSymbol}
-                                    </div>
-                                    <div>
-                                      <div className="font-semibold text-base">{curr.code}</div>
-                                      <div className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
-                                        {curr.name}
-                                      </div>
-                                    </div>
-                                  </div>
-                                  {isSelected && (
-                                    <div className={`w-2 h-2 rounded-full ${darkMode ? "bg-blue-400" : "bg-blue-500"}`}></div>
-                                  )}
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      ) : (
-                        <div className={`px-4 py-8 text-center ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
-                          <Search className={`w-8 h-8 mx-auto mb-3 ${darkMode ? "text-gray-600" : "text-gray-400"}`} />
-                          <p className="font-medium">No currencies found</p>
-                          <p className="text-sm mt-1">Try a different search term</p>
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className={`px-4 py-3 border-t ${darkMode ? "border-gray-700 bg-gray-750" : "border-gray-200 bg-gray-50"}`}>
-                      <p className={`text-xs text-center ${darkMode ? "text-gray-500" : "text-gray-400"}`}>
-                        {filteredCurrencies.length} of {currencies.length} currencies
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
 
