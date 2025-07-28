@@ -7,6 +7,7 @@ import { CurrencyProvider } from "./components/CurrencyContext";
 import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 import GoalsPage from './components/GoalsPage';
+import IncomeHistoryPage from './components/IncomeHistoryPage';
 
 export default function App() {
 
@@ -21,6 +22,7 @@ export default function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/goals" element={<GoalsPage />} />
+            <Route path="/income-history" element={<IncomeHistoryPage />} />
           </Routes>
         </Router>
       </CurrencyProvider>
