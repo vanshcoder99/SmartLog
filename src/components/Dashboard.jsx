@@ -251,25 +251,29 @@ export default function Dashboard() {
 
 
             {/* Expense Card */}
-            <div
-              className={`relative p-6 rounded-2xl transition-all duration-500 cursor-pointer transform hover:scale-105 hover:-translate-y-2 ${hoveredCard === "expense" ? "shadow-2xl shadow-red-200" : "shadow-lg"
-                } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-              style={{
-                background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
-                animationDelay: "0.4s",
-              }}
-              onMouseEnter={() => setHoveredCard("expense")}
-              onMouseLeave={() => setHoveredCard(null)}>
-              <div className="absolute top-4 right-4">
-                <TrendingDown className="w-8 h-8 text-white/80" />
+            <Link to="/expense-history" className="block">
+              <div
+                className={`relative p-6 rounded-2xl transition-all duration-500 cursor-pointer transform hover:scale-105 hover:-translate-y-2 ${hoveredCard === "expense" ? "shadow-2xl shadow-red-200" : "shadow-lg"
+                  } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+                style={{
+                  background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+                  animationDelay: "0.4s",
+                }}
+                onMouseEnter={() => setHoveredCard("expense")}
+                onMouseLeave={() => setHoveredCard(null)}
+              >
+                <div className="absolute top-4 right-4">
+                  <TrendingDown className="w-8 h-8 text-white/80" />
+                </div>
+                <div className="text-white/80 text-sm font-medium mb-2">Total Expense</div>
+                <div className="text-3xl font-black text-white mb-1">{formatCurrency(animatedValues.expense)}</div>
+                <div className="text-white/60 text-xs">-5% from last month</div>
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 rounded-full">
+                  <div className="h-full bg-white/40 rounded-full w-2/3 animate-[expandWidth_2s_ease-out_1.2s]"></div>
+                </div>
               </div>
-              <div className="text-white/80 text-sm font-medium mb-2">Total Expense</div>
-              <div className="text-3xl font-black text-white mb-1">{formatCurrency(animatedValues.expense)}</div>
-              <div className="text-white/60 text-xs">-5% from last month</div>
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 rounded-full">
-                <div className="h-full bg-white/40 rounded-full w-2/3 animate-[expandWidth_2s_ease-out_1.2s]"></div>
-              </div>
-            </div>
+            </Link>
+
 
             {/* Balance Card */}
             <div
