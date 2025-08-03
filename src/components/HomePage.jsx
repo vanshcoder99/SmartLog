@@ -193,6 +193,46 @@ export default function HomePage() {
             );
           })}
         </div>
+        <section className="py-12 px-6 rounded-3xl shadow-lg 
+  bg-white/70 dark:bg-gray-900/60 
+  backdrop-blur-lg border border-gray-200/50 dark:border-gray-700/50
+  max-w-4xl mx-auto">
+  
+  {/* Testimonials Heading */}
+  <h2 className="text-3xl font-bold text-center mb-8 
+    bg-gradient-to-r from-purple-400 via-pink-500 to-red-400 
+    bg-clip-text text-transparent">
+    💬 What Our Users Say
+  </h2>
+
+  {/* Testimonials */}
+  <div className="space-y-6 text-center">
+    <p className="italic text-gray-700 dark:text-gray-300">
+      "I love how SmartLog makes tracking my expenses effortless!"
+    </p>
+    <span className="block text-gray-500 dark:text-gray-400">– Rahul M., Pune</span>
+
+    <p className="italic text-gray-700 dark:text-gray-300">
+      "SmartLog helped me understand my spending patterns and save more."
+    </p>
+    <span className="block text-gray-500 dark:text-gray-400">– Ananya K., Delhi</span>
+  </div>
+
+  {/* Security Heading */}
+  <h2 className="text-3xl font-bold text-center mt-12 mb-6 
+    bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 
+    bg-clip-text text-transparent">
+    🔒 Bank-Level Security
+  </h2>
+
+  {/* Security Features */}
+  <ul className="space-y-3 text-center text-gray-700 dark:text-gray-300">
+    <li>✓ 256-bit encryption</li>
+    <li>✓ No third-party data sharing</li>
+    <li>✓ GDPR compliant</li>
+  </ul>
+</section>
+
       </div>
       <Footer />
     </div>
