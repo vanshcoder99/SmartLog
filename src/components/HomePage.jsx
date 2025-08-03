@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { MessageCircle, Lock } from 'lucide-react';
+
 import {
   IndianRupee,
   TrendingUp,
@@ -193,45 +195,62 @@ export default function HomePage() {
             );
           })}
         </div>
-        <section className="py-12 px-6 rounded-3xl shadow-lg 
-  bg-white/70 dark:bg-gray-900/60 
-  backdrop-blur-lg border border-gray-200/50 dark:border-gray-700/50
-  max-w-4xl mx-auto">
-  
-  {/* Testimonials Heading */}
-  <h2 className="text-3xl font-bold text-center mb-8 
-    bg-gradient-to-r from-purple-400 via-pink-500 to-red-400 
-    bg-clip-text text-transparent">
-    💬 What Our Users Say
-  </h2>
-
+  <motion.div
+  initial={{ opacity: 0, y: 80, scale: 0.9 }}
+  animate={{ opacity: 1, y: 0, scale: 1 }}
+  transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+  whileHover={{
+    scale: 1.03,
+    y: -8,
+    transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] },
+  }}
+  className={`p-12 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer max-w-5xl mx-auto mb-16 text-center ${
+    darkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-800'
+  }`}
+>
   {/* Testimonials */}
-  <div className="space-y-6 text-center">
-    <p className="italic text-gray-700 dark:text-gray-300">
-      "I love how SmartLog makes tracking my expenses effortless!"
-    </p>
-    <span className="block text-gray-500 dark:text-gray-400">– Rahul M., Pune</span>
-
-    <p className="italic text-gray-700 dark:text-gray-300">
-      "SmartLog helped me understand my spending patterns and save more."
-    </p>
-    <span className="block text-gray-500 dark:text-gray-400">– Ananya K., Delhi</span>
+  <div className="flex justify-center items-center mb-6">
+    <div className="bg-pink-500 w-16 h-16 rounded-2xl flex items-center justify-center text-white mr-4">
+      <MessageCircle className="w-8 h-8" />
+    </div>
+    <h3 className="text-2xl font-bold">What Our Users Say</h3>
   </div>
 
-  {/* Security Heading */}
-  <h2 className="text-3xl font-bold text-center mt-12 mb-6 
-    bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 
-    bg-clip-text text-transparent">
-    🔒 Bank-Level Security
-  </h2>
+  <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} italic`}>
+    "I love how SmartLog makes tracking my expenses effortless!"
+  </p>
+  <p className={`mt-2 font-semibold ${darkMode ? 'text-gray-100' : 'text-gray-800'}`}>
+    – Rahul M., Pune
+  </p>
 
-  {/* Security Features */}
-  <ul className="space-y-3 text-center text-gray-700 dark:text-gray-300">
+  <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} italic mt-4`}>
+    "SmartLog helped me understand my spending patterns and save more."
+  </p>
+  <p className={`mt-2 font-semibold ${darkMode ? 'text-gray-100' : 'text-gray-800'}`}>
+    – Ananya K., Delhi
+  </p>
+
+  {/* Divider */}
+  <div className={`my-8 border-t ${darkMode ? 'border-gray-700' : 'border-gray-300'}`}></div>
+
+  {/* Security */}
+  <div className="flex justify-center items-center mb-6">
+    <div className="bg-gradient-to-br from-purple-400 to-pink-500 w-16 h-16 rounded-2xl flex items-center justify-center text-white mr-4">
+      <Lock className="w-8 h-8" />
+    </div>
+    <h3 className="text-2xl font-bold">Bank-Level Security</h3>
+  </div>
+
+  <ul className={`space-y-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
     <li>✓ 256-bit encryption</li>
     <li>✓ No third-party data sharing</li>
     <li>✓ GDPR compliant</li>
   </ul>
-</section>
+</motion.div>
+
+
+
+
 
       </div>
       <Footer />
