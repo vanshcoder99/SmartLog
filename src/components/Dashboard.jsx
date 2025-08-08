@@ -3,6 +3,8 @@ import { useTransactions } from "./TransactionContext";
 import { useCurrency } from "./CurrencyContext";
 import { useState, useEffect } from "react";
 import AddTransactionModal from "./AddTransactionModal";
+ import EnhancedEmptyState from "./EnhancedEmptyState";
+
 import ConfirmationModal from "./ConfirmationModal";
 import Footer from "./Footer";
 // Download imports
@@ -11,8 +13,11 @@ import TransactionPDF from "./TransactionPDF";
 import { Link } from "react-router-dom";
 
 export default function Dashboard() {
+
   const { transactions, income, expense, setTransactions, deleteTransaction } = useTransactions();
   const [showModal, setShowModal] = useState(false);
+
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isVisible, setIsVisible] = useState(false);
@@ -558,24 +563,19 @@ export default function Dashboard() {
               </div>
               ))}
             </div>
+     {transactions.length === 0 && (
+  <div className="text-center mb-8">
+    {/* Styled Heading */}
+    <h2 className="inline-block px-6 py-3 mb-6 text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 rounded-full shadow-lg backdrop-blur-md border border-white/20">
+      🚀 No Transactions Yet — Let’s Get Started!
+    </h2>
 
-            {filteredAndSortedTransactions.length === 0 && (
-              <div className="text-center py-12">
-                <div className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 ${darkMode ? "bg-gray-800" : "bg-gray-100"
-                  }`}>
-                  <Search className={`w-8 h-8 ${darkMode ? "text-gray-500" : "text-gray-400"
-                    }`} />
-                </div>
+    <EnhancedEmptyState onAddTransaction={() => setShowModal(true)} />
+  </div>
+)}
 
-                <p className={`text-lg ${darkMode ? "text-gray-400" : "text-gray-500"
-                  }`}>
-                  No transactions found
-                </p>
-                <p className={darkMode ? "text-gray-500" : "text-gray-400"}>
-                  Try adjusting your search or filters
-                </p>
-              </div>
-            )}
+
+      
           </div>
         </div>
       </main>
