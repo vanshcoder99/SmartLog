@@ -24,6 +24,7 @@ export default function Dashboard() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [showBalance, setShowBalance] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [sortCriteria, setSortCriteria] = useState("date-desc");
 
