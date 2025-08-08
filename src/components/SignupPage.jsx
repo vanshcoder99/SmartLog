@@ -14,7 +14,6 @@ export default function SignUp() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
@@ -24,7 +23,7 @@ export default function SignUp() {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
 
@@ -34,35 +33,8 @@ export default function SignUp() {
       return;
     }
 
-    setLoading(true);
-
-    try {
-      // You can replace this with your real API call
-      const res = await fetch("http://localhost:5000/api/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Signup failed");
-      }
-
-      // Success → Go to dashboard
-      navigate("/dashboard");
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    // Directly navigate without authentication
+    navigate("/dashboard");
   };
 
   return (
@@ -71,7 +43,7 @@ export default function SignUp() {
         <h2 className="text-3xl font-bold text-violet-700 text-center">
           Create Account
         </h2>
-        <br></br>
+        <br />
 
         {error && (
           <p className="mb-4 text-red-500 text-sm text-center">{error}</p>
@@ -156,28 +128,30 @@ export default function SignUp() {
             </button>
           </div>
 
-           <div className="flex justify-end">
-              <button
-                type="button"
-                className="text-sm font-medium text-violet-600 hover:text-violet-800"
-              >
-                Forgot Password?
-              </button>
-            </div>
+          <div className="flex justify-end">
+            <button
+              type="button"
+              className="text-sm font-medium text-violet-600 hover:text-violet-800"
+            >
+              Forgot Password?
+            </button>
+          </div>
 
           {/* Submit */}
           <button
             type="submit"
-            disabled={loading}
             className="w-full bg-purple-500 text-white py-2 rounded-lg hover:bg-purple-600 transition"
           >
-            {loading ? "Signing up..." : "Sign Up"}
+            Sign Up
           </button>
         </form>
 
         <p className="mt-4 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link to="/login" className="font-semibold text-violet-600 hover:text-violet-800">
+          <Link
+            to="/login"
+            className="font-semibold text-violet-600 hover:text-violet-800"
+          >
             Login
           </Link>
         </p>
