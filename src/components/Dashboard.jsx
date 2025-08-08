@@ -1,5 +1,5 @@
 
-import { Plus, TrendingUp, TrendingDown, Wallet, IndianRupee, Calendar, Tag, Filter, Search, Eye, EyeOff, ChevronDown, ChevronLeft, ChevronRight, Trash2, Download, Moon, Sun, Target } from "lucide-react";
+import { Plus, TrendingUp, TrendingDown, Wallet, IndianRupee, Calendar, Tag, Filter, Search, Eye, EyeOff, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Trash2, Download, Moon, Sun, Target } from "lucide-react";
 
 import { useTransactions } from "./TransactionContext";
 import { useCurrency } from "./CurrencyContext";
