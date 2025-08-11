@@ -24,7 +24,7 @@ export default function AddTransactionModal({ showModal = true, setShowModal = (
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { currency, locale, setCurrency, setLocale } = useCurrency();
   const [errors, setErrors] = useState({});
-  const suggestedCategories = ['Food', 'Transport', 'Groceries', 'Entertainment', 'Bills', 'Shopping', 'Rent', 'Utilities', 'Salary', 'Others'];
+  const suggestedCategories = ['Food', 'Transport', 'Groceries', 'Entertainment', 'Bills', 'Shopping', 'Rent', 'Utilities', 'EMI', 'Others'];
   const [categorySuggestions, setCategorySuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
@@ -48,7 +48,7 @@ export default function AddTransactionModal({ showModal = true, setShowModal = (
     if (!form.amount || parseFloat(form.amount) <= 0) {
      newErrors.amount = "Please enter a valid amount";
     }
-    if (!form.category.trim()) {
+    if (form.type==="Expense" && !form.category.trim()) {
       newErrors.category = "Category is required";
     }
     setErrors(newErrors);
@@ -182,48 +182,50 @@ const handleSubmit = async (e) => {
             </div>
 
 
-            <div className="space-y-2 relative">
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">Category*</label>
-              <input
-                type="text"
-                value={form.category}
-                onChange={e => handleInputChange("category", e.target.value)}
-                onFocus={() => setShowSuggestions(categorySuggestions.length > 0)}
-                onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
-                className={`w-full px-4 py-3 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white ${
-                  errors.category 
-                    ? 'border-red-300 bg-red-50 dark:bg-red-900/20 dark:border-red-700' 
-                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 bg-white dark:bg-gray-700'
-                }`}
-                placeholder="e.g., Food, Transport, Entertainment"
-              />
-              {errors.category && <p className="text-red-500 dark:text-red-400 text-sm animate-pulse">{errors.category}</p>}
+            {form.type === "Expense" && (
+              <div className="space-y-2 relative">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">Category*</label>
+                <input
+                  type="text"
+                  value={form.category}
+                  onChange={e => handleInputChange("category", e.target.value)}
+                  onFocus={() => setShowSuggestions(categorySuggestions.length > 0)}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
+                  className={`w-full px-4 py-3 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white ${
+                    errors.category 
+                      ? 'border-red-300 bg-red-50 dark:bg-red-900/20 dark:border-red-700' 
+                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 bg-white dark:bg-gray-700'
+                  }`}
+                  placeholder="e.g., Food, Transport, Entertainment"
+                />
+                {errors.category && <p className="text-red-500 dark:text-red-400 text-sm animate-pulse">{errors.category}</p>}
 
               {/* 💡 Suggestion Dropdown */}
-              {showSuggestions && (
-                <ul className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl max-h-48 overflow-auto shadow-lg">
-                  {categorySuggestions.map((suggestion, index) => (
-                    <li
-                      key={index}
-                      onMouseDown={() => {
-                        setForm(prev => ({ ...prev, category: suggestion }));
-                        setShowSuggestions(false);
-                        setCategorySuggestions([]);
-                      }}
-                      className="px-4 py-2 cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-600 text-gray-900 dark:text-white transition-colors"
-                    >
-                      {suggestion}
-                    </li>
+                {showSuggestions && (
+                  <ul className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl max-h-48 overflow-auto shadow-lg">
+                    {categorySuggestions.map((suggestion, index) => (
+                      <li
+                        key={index}
+                        onMouseDown={() => {
+                          setForm(prev => ({ ...prev, category: suggestion }));
+                          setShowSuggestions(false);
+                          setCategorySuggestions([]);
+                        }}
+                        className="px-4 py-2 cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-600 text-gray-900 dark:text-white transition-colors"
+                      >
+                        {suggestion}
+                      </li>
 
-                  ))}
-                </ul>
-              )}
-            </div>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )} 
 
 
     
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">Type*</label>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">Transaction type*</label>
               <div className="flex bg-gray-100 dark:bg-gray-700 rounded-xl p-1">
                 {['Income', 'Expense'].map((type) => (
                   <button
@@ -233,9 +235,9 @@ const handleSubmit = async (e) => {
                     className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all duration-200 ${
                       form.type === type
                         ? type === 'Income' 
-                          ? 'bg-green-500 text-white shadow-md transform scale-105 dark:bg-green-600'
-                          : 'bg-red-500 text-white shadow-md transform scale-105 dark:bg-red-600'
-                        : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
+                          ? 'bg-green-500 text-white shadow-md transform scale-100 dark:bg-green-600'
+                          : 'bg-red-500 text-white shadow-md transform scale-100 dark:bg-red-600'
+                        : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer'
                     }`}
                   >
                     {type}
